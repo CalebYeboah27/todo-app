@@ -108,9 +108,10 @@ function App() {
         </Button>
       </form>
 
-      <ul>
+      <ul className="todo-list">
         {todos.map((todo) => (
           <div>
+            {console.log(todo)}
             <Todo key={todo.id} todo={todo} />
           </div>
         ))}

@@ -43,7 +43,6 @@ const Todo = ({ todo, id }) => {
   const [input, setInput] = useState("");
   const [date, setDate] = useState("");
 
-
   const updateTodo = (e) => {
     e.preventDefault();
     // Update todo with the new input text
@@ -57,14 +56,32 @@ const Todo = ({ todo, id }) => {
     setOpen(false);
   };
 
+  console.log(todo.date)
+
+  const day = todo.date.substr(0, 10);
+  const time = todo.date.substr(11, 15);
+
   return (
     <>
       <List key={todo.id} className="todo__list">
         <ListItem>
           <ListItemAvatar>
-            <ListItemText primary={todo.todo} secondary={todo.date} />
+            <ListItemText primary={todo.todo} secondary={`${day}, ${time} `} />
           </ListItemAvatar>
         </ListItem>
+        <div className="edit-icon">
+          <CreateRoundedIcon
+            className="create-icon"
+            onClick={(e) => setOpen(true)}
+          />
+        </div>
+        <div className="delete-icon">
+          <DeleteForeverIcon
+            className="delete"
+            onClick={(event) => db.collection("todos").doc(todo.id).delete()}
+            color="secondary"
+          />
+        </div>
         <Modal open={open} onClose={(e) => setOpen(false)}>
           <div className={classes.paper}>
             <h4>Update your Todo</h4>
@@ -95,15 +112,6 @@ const Todo = ({ todo, id }) => {
             </form>
           </div>
         </Modal>
-        <CreateRoundedIcon
-          className="create-icon"
-          onClick={(e) => setOpen(true)}
-        />
-        <DeleteForeverIcon
-          className="delete"
-          onClick={(event) => db.collection("todos").doc(todo.id).delete()}
-          color="secondary"
-        />
       </List>
     </>
   );

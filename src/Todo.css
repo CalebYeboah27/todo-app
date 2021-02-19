@@ -1,4 +1,11 @@
-/* .create-icon {
-  padding-right: 10px;
+.todo__list {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+}
 
-} */
+.delete-icon,
+.edit-icon {
+  padding-top: 20px;
+  padding-right: 10px;
+}
