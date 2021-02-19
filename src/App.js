@@ -4,6 +4,7 @@ import firebase from "firebase";
 import db from "./firebase";
 import Todo from "./Todo";
 import "./bootstrap.min.css";
+import "./App.css"
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -18,10 +19,13 @@ function App() {
     db.collection("todos")
       .orderBy("timeStamp", "desc")
       .onSnapshot((snapshot) => {
-        console.log(snapshot.docs.map((doc) => doc.data().todos));
-        setTodos(snapshot.docs.map((doc) => doc.data().todos));
+        // console.log(snapshot.docs.map((doc) => doc.data().todos));
+        setTodos(
+          snapshot.docs.map((doc) => ({ id: doc.id, todo: doc.data().todos }))
+        );
       });
   }, []);
+
 
   const addTodo = (event) => {
     event.preventDefault(); //
@@ -31,18 +35,6 @@ function App() {
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setInput(""); // Clear up the input field after clicking submit
-  };
-
-  const removeTodo = (event) => {
-    db.collection("todos")
-      .doc("todo")
-      .delete()
-      .then(() => {
-        console.log("Document successfully deleted!");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
-      });
   };
 
   return (
@@ -56,7 +48,7 @@ function App() {
         flexDirection: "column",
       }}
     >
-      <h1>Hello Programmers</h1>
+      <h1 className="h1">My Note App</h1>
       <form>
         <FormControl>
           <InputLabel htmlFor="my-input">Write a Todo</InputLabel>
@@ -69,7 +61,6 @@ function App() {
           />
         </FormControl>
         <Button
-          disable={!input}
           type="submit"
           onClick={addTodo}
           variant="contained"
@@ -82,10 +73,7 @@ function App() {
       <ul>
         {todos.map((todo) => (
           <div>
-            <Todo text={todo} />
-            <Button onClick={removeTodo} color="secondary">
-              Remove Todo
-            </Button>
+            <Todo key={todo.id} text={todo} />
           </div>
         ))}
       </ul>

@@ -28,6 +28,7 @@
   color: #61dafb;
 }
 
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -39,6 +40,10 @@
 
 li {
   list-style-type: none;
+}
+
+.h1 {
+  margin-bottom: 40px;
 }
 
 
