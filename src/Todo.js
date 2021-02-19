@@ -4,17 +4,29 @@ import firebase from "firebase";
 import "./Todo.css";
 import {
   Button,
+  FormControl,
   Input,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Modal,
+  TextField,
 } from "@material-ui/core";
+import CreateRoundedIcon from "@material-ui/icons/CreateRounded";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import db from "./firebase";
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 135,
+  },
   paper: {
     position: "absolute",
     width: 400,
@@ -25,17 +37,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Todo = ({ text, id }) => {
+const Todo = ({ todo, id }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [date, setDate] = useState("");
+
 
   const updateTodo = (e) => {
     e.preventDefault();
     // Update todo with the new input text
 
-    db.collection("todos").doc(text.id).update({
+    db.collection("todos").doc(todo.id).update({
       todos: input,
+      currentDate: date,
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setInput("");
@@ -44,33 +59,49 @@ const Todo = ({ text, id }) => {
 
   return (
     <>
-      <List key={text.id} className="todo__list">
+      <List key={todo.id} className="todo__list">
         <ListItem>
           <ListItemAvatar>
-            <ListItemText primary={text.todo} secondary="Next Deadline" />
+            <ListItemText primary={todo.todo} secondary={todo.date} />
           </ListItemAvatar>
         </ListItem>
         <Modal open={open} onClose={(e) => setOpen(false)}>
           <div className={classes.paper}>
-            <h3>Update your to do</h3>
+            <h4>Update your Todo</h4>
             <form>
-              <Input
-                placeholder={text.todo}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-              <Button type="submit" onClick={updateTodo}>
-                Update Todo
-              </Button>
+              <FormControl>
+                <Input
+                  placeholder={todo.todo}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                <TextField
+                  id="datetime-local"
+                  label="Set deadline"
+                  type="datetime-local"
+                  placeholder={todo.date}
+                  value={date}
+                  onChange={(event) => setDate(event.target.value)}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <br />
+                <Button variant="contained" type="submit" onClick={updateTodo}>
+                  Update Todo
+                </Button>
+              </FormControl>
             </form>
           </div>
         </Modal>
-        <Button variant="contained" onClick={(e) => setOpen(true)}>
-          Edit
-        </Button>
+        <CreateRoundedIcon
+          className="create-icon"
+          onClick={(e) => setOpen(true)}
+        />
         <DeleteForeverIcon
           className="delete"
-          onClick={(event) => db.collection("todos").doc(text.id).delete()}
+          onClick={(event) => db.collection("todos").doc(todo.id).delete()}
           color="secondary"
         />
       </List>
