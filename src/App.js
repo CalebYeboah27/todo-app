@@ -72,7 +72,7 @@ function App() {
         flexDirection: "column",
       }}
     >
-      <h1 className="h1">My Note App</h1>
+      <h1 className="h1">My Todo App</h1>
       <form>
         <FormControl>
           <InputLabel htmlFor="my-input">Write a Todo</InputLabel>
