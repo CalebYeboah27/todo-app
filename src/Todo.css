@@ -4,6 +4,12 @@
   padding-top: 30px;
 }
 
+.todo__modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .delete-icon,
 .edit-icon {
   padding-top: 20px;

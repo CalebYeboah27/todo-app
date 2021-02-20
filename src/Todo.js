@@ -28,8 +28,11 @@ const useStyles = makeStyles((theme) => ({
     width: 135,
   },
   paper: {
-    position: "absolute",
-    width: 400,
+    width: 430,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -39,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Todo = ({ todo, id }) => {
   const classes = useStyles();
+
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [date, setDate] = useState("");
@@ -56,8 +60,6 @@ const Todo = ({ todo, id }) => {
     setOpen(false);
   };
 
-  console.log(todo.date)
-
   const day = todo.date.substr(0, 10);
   const time = todo.date.substr(11, 15);
 
@@ -66,7 +68,7 @@ const Todo = ({ todo, id }) => {
       <List key={todo.id} className="todo__list">
         <ListItem>
           <ListItemAvatar>
-            <ListItemText primary={todo.todo} secondary={`${day}, ${time} `} />
+            <ListItemText primary={todo.todo} secondary={`${day}, ${time}`} />
           </ListItemAvatar>
         </ListItem>
         <div className="edit-icon">
@@ -82,36 +84,46 @@ const Todo = ({ todo, id }) => {
             color="secondary"
           />
         </div>
-        <Modal open={open} onClose={(e) => setOpen(false)}>
-          <div className={classes.paper}>
-            <h4>Update your Todo</h4>
-            <form>
-              <FormControl>
-                <Input
-                  placeholder={todo.todo}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                />
-                <TextField
-                  id="datetime-local"
-                  label="Set deadline"
-                  type="datetime-local"
-                  placeholder={todo.date}
-                  value={date}
-                  onChange={(event) => setDate(event.target.value)}
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <br />
-                <Button variant="contained" type="submit" onClick={updateTodo}>
-                  Update Todo
-                </Button>
-              </FormControl>
-            </form>
-          </div>
-        </Modal>
+        <div>
+          <Modal
+            className="todo__modal"
+            open={open}
+            onClose={(e) => setOpen(false)}
+          >
+            <div className={classes.paper}>
+              <h4>Update your Todo</h4>
+              <form>
+                <FormControl>
+                  <Input
+                    placeholder={todo.todo}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                  />
+                  <TextField
+                    id="datetime-local"
+                    label="Set deadline"
+                    type="datetime-local"
+                    placeholder={todo.date}
+                    value={date}
+                    onChange={(event) => setDate(event.target.value)}
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <br />
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    onClick={updateTodo}
+                  >
+                    Update Todo
+                  </Button>
+                </FormControl>
+              </form>
+            </div>
+          </Modal>
+        </div>
       </List>
     </>
   );

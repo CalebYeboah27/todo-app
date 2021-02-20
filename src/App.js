@@ -104,7 +104,7 @@ function App() {
           variant="contained"
           color="primary"
         >
-          Add To Do
+          Add Todo
         </Button>
       </form>
 
